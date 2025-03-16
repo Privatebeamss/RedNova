@@ -1,1 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedNova Market</title>
+    <style>
+        /* General Styles */
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
 
+        /* Animated Space Background with Particles */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Centered Main Content */
+        .container {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        /* Search Box */
+        .search-box {
+            width: 50%;
+            margin: 20px auto;
+            padding: 15px;
+            font-size: 22px;
+            border: 2px solid red;
+            background: black;
+            color: white;
+            text-align: center;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px red; }
+            100% { box-shadow: 0 0 20px red; }
+        }
+
+        /* Product Section */
+        .products {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        /* Product Boxes */
+        .product-box {
+            background-color: rgba(20, 20, 20, 0.9);
+            width: 320px;
+            height: 200px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid red;
+            transition: 0.3s;
+        }
+
+        .product-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px red;
+        }
+
+        .product-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: red;
+        }
+
+        .product-description {
+            font-size: 14px;
+            color: gray;
+            margin-top: 10px;
+        }
+
+        .product-link {
+            display: block;
+            margin-top: 15px;
+            padding: 10px;
+            background: red;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        /* Discord Icon */
+        .discord-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            padding: 20px;
+            text-align: center;
+            font-size: 16px;
+            color: gray;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Animated Space Background -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Discord Icon -->
+    <a href="https://discord.com/users/1323156023065837569" target="_blank">
+        <img src="https://www.svgrepo.com/show/353655/discord-icon.svg" alt="Discord" class="discord-icon">
+    </a>
+
+    <!-- Home Section -->
+    <div class="container">
+        <h1>Welcome to <span style="color: red;">RedNova</span> Market!</h1>
+        <p>Trusted by many. High-quality services for the best price.</p>
+        <input type="text" class="search-box" placeholder="Search for products...">
+        <p style="color: red; font-size: 18px; margin-top: 20px;">DM Me After Purchase</p>
+    </div>
+
+    <!-- Products Section -->
+    <div class="products">
+
+        <!-- Web Design Product -->
+        <div class="product-box">
+            <div class="product-title">Web Design</div>
+            <div class="product-description">Custom, high-quality web design tailored to your needs.</div>
+            <a href="https://www.roblox.com/game-pass/1107757056" target="_blank" class="product-link">Buy Now</a>
+        </div>
+
+        <!-- Bot Development Product -->
+        <div class="product-box">
+            <div class="product-title">Bot Development</div>
+            <div class="product-description">Powerful, custom bots for automation, Discord, and more.</div>
+            <a href="https://www.roblox.com/game-pass/1107479668" target="_blank" class="product-link">Buy Now</a>
+        </div>
+
+        <!-- Coming Soon Product -->
+        <div class="product-box">
+            <div class="product-title">Coming Soon...</div>
+            <div class="product-description">New services launching soon! Stay tuned.</div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2025 RedNova Market. All Rights Reserved.
+    </div>
+
+    <!-- JavaScript for Animated Particles -->
+    <script>
+        const canvas = document.getElementById("particleCanvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+
+        class Particle {
+            constructor(x, y, size, speedX, speedY) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+                this.speedX = speedX;
+                this.speedY = speedY;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = "white";
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                let size = Math.random() * 2 + 1;
+                let x = Math.random() * canvas.width;
+                let y = Math.random() * canvas.height;
+                let speedX = (Math.random() - 0.5) * 0.5;
+                let speedY = (Math.random() - 0.5) * 0.5;
+                particles.push(new Particle(x, y, size, speedX, speedY));
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let particle of particles) {
+                particle.update();
+                particle.draw();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener("resize", () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+
+        init();
+        animate();
+    </script>
+
+</body>
+</html>
